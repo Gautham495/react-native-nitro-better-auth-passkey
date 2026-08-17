@@ -10,20 +10,21 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported }
-  s.source       = { :git => "https://github.com/Gautham495/react-native-nitro-better-auth-passkey.git", :tag => "#{s.version}" }
+  s.platforms    = { :ios => "16.0" }
+  s.source       = { :git => "https://github.com/gautham495/react-native-nitro-better-auth-passkey.git", :tag => "#{s.version}" }
 
   s.source_files = [
-    "ios/**/*.{swift}",
-    "ios/**/*.{m,mm}",
-    "cpp/**/*.{hpp,cpp}",
+    "ios/**/*.{swift,h,m,mm,cpp,hpp}",
+    "nitrogen/generated/ios/**/*.{swift,h,m,mm,cpp,hpp}",
   ]
 
-  s.dependency 'React-jsi'
-  s.dependency 'React-callinvoker'
+  s.frameworks = "AuthenticationServices"
 
   load 'nitrogen/generated/ios/NitroBetterAuthPasskey+autolinking.rb'
   add_nitrogen_files(s)
+
+  s.dependency "React-jsi"
+  s.dependency "React-callinvoker"
 
   install_modules_dependencies(s)
 end
