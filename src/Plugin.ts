@@ -11,9 +11,36 @@ import type {
 } from './types/webauthn';
 import type { Session, User } from 'better-auth';
 import type { BetterFetchOption } from 'better-auth/client';
-import { atom } from 'nanostores';
 
 import { NativePasskey } from './Passkey';
+
+type Listener<T> = (value: T) => void;
+interface MiniAtom<T> {
+  get(): T;
+  set(value: T): void;
+  subscribe(listener: Listener<T>): () => void;
+  listen(listener: Listener<T>): () => void;
+}
+const atom = <T>(initial: T): MiniAtom<T> => {
+  let value = initial;
+  const listeners = new Set<Listener<T>>();
+  const subscribe = (listener: Listener<T>) => {
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
+  };
+  return {
+    get: () => value,
+    set: (next: T) => {
+      value = next;
+      for (const l of listeners) l(value);
+    },
+    subscribe,
+    // nanostores exposes both — better-auth may call either.
+    listen: subscribe,
+  };
+};
 
 /**
  * Native-only better-auth passkey client backed by Nitro Modules.
@@ -70,7 +97,7 @@ export const getPasskeyActionsNative = (
     $listPasskeys,
     $store,
   }: {
-    $listPasskeys: ReturnType<typeof atom<number>>;
+    $listPasskeys: MiniAtom<number>;
     $store: ClientStore;
   }
 ) => {
