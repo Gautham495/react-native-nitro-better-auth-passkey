@@ -1,41 +1,31 @@
 project(nitrobetterauthpasskey)
 cmake_minimum_required(VERSION 3.9.0)
 
+set(PACKAGE_NAME nitrobetterauthpasskey)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 
-# Target name MUST match the target Nitrogen's autolinking cmake references
-# (line 30 of NitroBetterAuthPasskey+autolinking.cmake does
-# `target_sources(nitrobetterauthpasskey ...)`).
-# CMake targets are case-sensitive — this is lowercase.
-set(PACKAGE_NAME nitrobetterauthpasskey)
+# Define C++ library and add all sources
+add_library(${PACKAGE_NAME} SHARED src/main/cpp/cpp-adapter.cpp)
 
-add_library(${PACKAGE_NAME} SHARED
-  src/main/cpp/dummy.cpp
+# Add Nitrogen specs :)
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/nitrobetterauthpasskey+autolinking.cmake)
+
+# Set up local includes
+include_directories("src/main/cpp" "../cpp")
+
+find_library(LOG_LIB log)
+
+# Link all libraries together
+target_link_libraries(
+        ${PACKAGE_NAME}
+        ${LOG_LIB}
+        android # <-- Android core
 )
 
-# Now the autolinking file can attach its sources/definitions/libs to
-# the target we just created.
-include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroBetterAuthPasskey+autolinking.cmake)
+find_library(android-lib android)
 
-target_include_directories(${PACKAGE_NAME} PRIVATE
-  "${CMAKE_SOURCE_DIR}/src/main/cpp"
+target_link_libraries(
+    ${PACKAGE_NAME}
+    ${android-lib}
 )
-
-find_package(ReactAndroid REQUIRED CONFIG)
-find_package(fbjni REQUIRED CONFIG)
-
-target_link_libraries(${PACKAGE_NAME}
-  android
-  ReactAndroid::jsi
-  fbjni::fbjni
-)
-
-if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 76)
-  target_link_libraries(${PACKAGE_NAME} ReactAndroid::reactnative)
-else()
-  target_link_libraries(${PACKAGE_NAME}
-    ReactAndroid::reactnativejni
-    ReactAndroid::react_nativemodule_core
-    ReactAndroid::turbomodulejsijni
-  )
-endif()

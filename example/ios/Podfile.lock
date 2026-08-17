@@ -3,8 +3,34 @@ PODS:
   - hermes-engine (250829098.0.10):
     - hermes-engine/Pre-built (= 250829098.0.10)
   - hermes-engine/Pre-built (250829098.0.10)
-  - NitroBetterAuthPasskey (1.0.2):
+  - MMKVCore (2.4.0)
+  - NitroBetterAuthPasskey (1.0.3):
     - hermes-engine
+    - NitroModules
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - NitroMmkv (4.3.2):
+    - hermes-engine
+    - MMKVCore (= 2.4.0)
     - NitroModules
     - RCTRequired
     - RCTTypeSafety
@@ -1800,6 +1826,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - NitroBetterAuthPasskey (from `../..`)
+  - NitroMmkv (from `../node_modules/react-native-mmkv`)
   - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
   - RCTRequired (from `../node_modules/react-native/Libraries/Required`)
@@ -1874,6 +1901,10 @@ DEPENDENCIES:
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
+SPEC REPOS:
+  trunk:
+    - MMKVCore
+
 EXTERNAL SOURCES:
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
@@ -1882,6 +1913,8 @@ EXTERNAL SOURCES:
     :tag: hermes-v250829098.0.10
   NitroBetterAuthPasskey:
     :path: "../.."
+  NitroMmkv:
+    :path: "../node_modules/react-native-mmkv"
   NitroModules:
     :path: "../node_modules/react-native-nitro-modules"
   RCTDeprecation:
@@ -2030,7 +2063,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBLazyVector: c00c20551d40126351a6783c47ce75f5b374851b
   hermes-engine: afb0c50d265a342de037e47b941eb804209da9a1
-  NitroBetterAuthPasskey: 2a2e77dbf78a4a4fe6c45c352ce121a9ce851b70
+  MMKVCore: 3d16ce9f7d411e135020915fde98a056859a1efa
+  NitroBetterAuthPasskey: 609737847657b79ff970f0f749c3e1be11b75007
+  NitroMmkv: 85a251e15c39d7c95fe58cf40786fa126b8d143c
   NitroModules: 452230d9b63c6c3f59dd97eeaa27ec3449271d4a
   RCTDeprecation: 3bb167081b134461cfeb875ff7ae1945f8635257
   RCTRequired: 74839f55d5058a133a0bc4569b0afec750957f64
@@ -2106,4 +2141,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a31d8973ab779c4eb6e2b6a62a432ec4d6c58f7e
 
-COCOAPODS: 1.17.0
+COCOAPODS: 1.15.2
