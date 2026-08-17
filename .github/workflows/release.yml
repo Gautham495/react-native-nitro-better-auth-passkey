@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           # Use a PAT so the push we make below re-triggers other workflows
@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
@@ -67,11 +67,11 @@ jobs:
       - name: Build package
         run: yarn prepare
 
-      - name: Verify build output
+      - name: Verify dist
         run: |
           ls -la lib/
-          test -f lib/index.js
-          test -f lib/index.d.ts
+          # Check for the outputs from react-native-builder-bob
+          test -f lib/module/index.js && test -f lib/typescript/src/index.d.ts
 
       # ---- Bump version -----------------------------------------------------
 
