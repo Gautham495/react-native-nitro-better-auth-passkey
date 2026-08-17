@@ -12,15 +12,15 @@ import NitroModules
 public final class NitroBetterAuthPasskeyAutolinking {
   public typealias bridge = margelo.nitro.nitrobetterauthpasskey.bridge.swift
 
-  public static func createNitroBetterAuthPasskey() -> bridge.std__shared_ptr_HybridNitroBetterAuthPasskeySpec_ {
-    let hybridObject = NitroBetterAuthPasskey()
-    return { () -> bridge.std__shared_ptr_HybridNitroBetterAuthPasskeySpec_ in
+  public static func createPasskey() -> bridge.std__shared_ptr_HybridPasskeySpec_ {
+    let hybridObject = HybridPasskey()
+    return { () -> bridge.std__shared_ptr_HybridPasskeySpec_ in
       let __cxxWrapped = hybridObject.getCxxWrapper()
       return __cxxWrapped.getCxxPart()
     }()
   }
   
-  public static func isNitroBetterAuthPasskeyRecyclable() -> Bool {
-    return NitroBetterAuthPasskey.self is any RecyclableView.Type
+  public static func isPasskeyRecyclable() -> Bool {
+    return HybridPasskey.self is any RecyclableView.Type
   }
 }

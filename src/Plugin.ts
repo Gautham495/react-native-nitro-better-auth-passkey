@@ -1,4 +1,4 @@
-import type { BetterAuthClientPlugin, ClientStore } from '@better-auth/core';
+import type { ClientStore } from '@better-auth/core';
 import type { Passkey as PasskeyRecord } from '@better-auth/passkey/client';
 import { passkeyClient } from '@better-auth/passkey/client';
 import type { BetterFetch } from '@better-fetch/fetch';
@@ -14,6 +14,14 @@ import type { BetterFetchOption } from 'better-auth/client';
 
 import { NativePasskey } from './Passkey';
 
+/**
+ * Minimal nanostores-compatible atom. Just enough shape for
+ * better-auth's `getPasskeyActions` and its `atomListeners` to be happy
+ * without pulling nanostores in as a dependency.
+ *
+ * If a consumer already uses nanostores elsewhere, this atom is
+ * observationally identical — same `get`/`set`/`subscribe` surface.
+ */
 type Listener<T> = (value: T) => void;
 interface MiniAtom<T> {
   get(): T;
@@ -64,15 +72,23 @@ export const betterAuthPasskeyClient = () => {
   const baseClient = passkeyClient();
   const $listPasskeys = atom<number>(0);
 
-  return {
-    id: baseClient.id,
-    $InferServerPlugin: baseClient.$InferServerPlugin,
+  // Cast the return to the base client's shape so that
+  // `authClient.signIn.passkey` and `authClient.passkey.addPasskey`
+  // stay properly typed on the consumer's `createAuthClient()` result.
+  // The base `passkeyClient()` already declares `$InferServerPlugin`,
+  // `getAtoms`, `pathMethods`, `atomListeners`, and — via type inference
+  // from `getActions` — the action shape that better-auth exposes on
+  // the auth client. We reuse all of that unchanged; we only swap the
+  // runtime implementation of `getActions` for our native one.
+  const plugin: typeof baseClient = {
+    ...baseClient,
     getActions: ($fetch: BetterFetch, $store: ClientStore) =>
-      getPasskeyActionsNative($fetch, { $listPasskeys, $store }),
-    getAtoms: baseClient.getAtoms,
-    pathMethods: baseClient.pathMethods,
-    atomListeners: baseClient.atomListeners,
-  } satisfies BetterAuthClientPlugin;
+      getPasskeyActionsNative($fetch, {
+        $listPasskeys,
+        $store,
+      }) as ReturnType<NonNullable<typeof baseClient.getActions>>,
+  };
+  return plugin;
 };
 
 const buildCancelledError = (e: unknown) => {
@@ -181,7 +197,7 @@ export const getPasskeyActionsNative = (
     if (!optionsRes.data) return optionsRes;
 
     try {
-      const nativeResult = await NativePasskey.register({
+      const nativeResult = await NativePasskey.createPasskey({
         optionsJSON: JSON.stringify(optionsRes.data),
         useAutoRegister: opts?.useAutoRegister,
       });

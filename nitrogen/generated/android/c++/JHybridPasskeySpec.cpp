@@ -63,8 +63,8 @@ namespace margelo::nitro::nitrobetterauthpasskey {
   
 
   // Methods
-  std::shared_ptr<Promise<RegistrationResponse>> JHybridPasskeySpec::register(const RegisterPasskeyInput& input) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<JRegisterPasskeyInput> /* input */)>("register");
+  std::shared_ptr<Promise<RegistrationResponse>> JHybridPasskeySpec::createPasskey(const RegisterPasskeyInput& input) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<JRegisterPasskeyInput> /* input */)>("createPasskey");
     auto __result = method(_javaPart, JRegisterPasskeyInput::fromCpp(input));
     return [&]() {
       auto __promise = Promise<RegistrationResponse>::create();

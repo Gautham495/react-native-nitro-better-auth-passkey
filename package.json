@@ -188,7 +188,6 @@
     "version": "0.63.0"
   },
   "dependencies": {
-    "@better-auth/expo": "^1.6.29",
     "react-native-mmkv": "^4.3.2"
   }
 }

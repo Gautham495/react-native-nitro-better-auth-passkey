@@ -10,7 +10,7 @@
 #import "NitroBetterAuthPasskey-Swift-Cxx-Umbrella.hpp"
 #import <type_traits>
 
-#include "HybridNitroBetterAuthPasskeySpecSwift.hpp"
+#include "HybridPasskeySpecSwift.hpp"
 
 @interface NitroBetterAuthPasskeyAutolinking : NSObject
 @end
@@ -22,9 +22,9 @@
   using namespace margelo::nitro::nitrobetterauthpasskey;
 
   HybridObjectRegistry::registerHybridObjectConstructor(
-    "NitroBetterAuthPasskey",
+    "Passkey",
     []() -> std::shared_ptr<HybridObject> {
-      std::shared_ptr<HybridNitroBetterAuthPasskeySpec> hybridObject = NitroBetterAuthPasskey::NitroBetterAuthPasskeyAutolinking::createNitroBetterAuthPasskey();
+      std::shared_ptr<HybridPasskeySpec> hybridObject = NitroBetterAuthPasskey::NitroBetterAuthPasskeyAutolinking::createPasskey();
       return hybridObject;
     }
   );

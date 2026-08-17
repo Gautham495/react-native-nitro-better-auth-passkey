@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { authClient } from './auth-client';
+import { authClient, clearAuthStorage } from './auth-client';
 
 /**
  * Example app for `react-native-nitro-better-auth-passkey`.
@@ -42,13 +42,13 @@ export default function App() {
     );
   };
 
+  const userEmail = session?.user?.email;
+
   useEffect(() => {
-    const userEmail = session?.user?.email;
     if (userEmail) {
       append(`Session active: ${userEmail}`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.email]);
+  }, [userEmail]);
 
   const withBusy = async (label: string, fn: () => Promise<void>) => {
     if (busy) return;
@@ -105,6 +105,7 @@ export default function App() {
     withBusy('Register passkey', async () => {
       const passkeyName = deviceName();
       append(`Requesting passkey registration as "${passkeyName}"…`);
+
       const res = await authClient.passkey.addPasskey({
         name: passkeyName,
         authenticatorAttachment: 'platform',
@@ -127,7 +128,9 @@ export default function App() {
   const signInWithPasskey = () =>
     withBusy('Sign in (passkey)', async () => {
       append('Requesting passkey assertion…');
+
       const res = await authClient.signIn.passkey();
+
       if (res.error) {
         if (res.error.statusText === 'AUTH_CANCELLED') {
           append('Passkey sign-in cancelled.');
@@ -149,6 +152,7 @@ export default function App() {
   const signOut = () =>
     withBusy('Sign out', async () => {
       await authClient.signOut();
+      clearAuthStorage();
       append('Signed out.');
       await refetch();
     });
@@ -325,7 +329,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: '#0f1115',
-    paddingTop: 20,
+    paddingTop: 30,
   },
   flex: { flex: 1 },
   container: {

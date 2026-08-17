@@ -125,9 +125,9 @@ open class HybridPasskeySpec_cxx {
 
   // Methods
   @inline(__always)
-  public final func register(input: RegisterPasskeyInput) -> bridge.Result_std__shared_ptr_Promise_RegistrationResponse___ {
+  public final func createPasskey(input: RegisterPasskeyInput) -> bridge.Result_std__shared_ptr_Promise_RegistrationResponse___ {
     do {
-      let __result = try self.__implementation.register(input: input)
+      let __result = try self.__implementation.createPasskey(input: input)
       let __resultCpp = { () -> bridge.std__shared_ptr_Promise_RegistrationResponse__ in
         let __promise = bridge.create_std__shared_ptr_Promise_RegistrationResponse__()
         let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_RegistrationResponse__(__promise)

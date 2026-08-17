@@ -1,4 +1,5 @@
 {
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
   "cxxNamespace": ["nitrobetterauthpasskey"],
   "ios": {
     "iosModuleName": "NitroBetterAuthPasskey"
@@ -8,16 +9,16 @@
     "androidCxxLibName": "nitrobetterauthpasskey"
   },
   "autolinking": {
-    "NitroBetterAuthPasskey": {
+    "Passkey": {
       "ios": {
         "language": "swift",
-        "implementationClassName": "NitroBetterAuthPasskey"
+        "implementationClassName": "HybridPasskey"
       },
       "android": {
         "language": "kotlin",
-        "implementationClassName": "NitroBetterAuthPasskey"
+        "implementationClassName": "HybridPasskey"
       }
     }
   },
-  "ignorePaths": ["node_modules"]
+  "ignorePaths": ["node_modules", "lib"]
 }

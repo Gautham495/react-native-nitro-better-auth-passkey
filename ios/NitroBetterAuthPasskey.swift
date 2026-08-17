@@ -2,9 +2,9 @@ import AuthenticationServices
 import Foundation
 import NitroModules
 
-final class NitroBetterAuthPasskey: HybridPasskeySpec {
+final class HybridPasskey: HybridPasskeySpec {
 
-  func register(input: RegisterPasskeyInput) throws -> Promise<RegistrationResponse> {
+  func createPasskey(input: RegisterPasskeyInput) throws -> Promise<RegistrationResponse> {
     let options = try PasskeyCreationOptions.parse(json: input.optionsJSON)
     let useAutoRegister = input.useAutoRegister ?? false
     let promise = Promise<RegistrationResponse>()

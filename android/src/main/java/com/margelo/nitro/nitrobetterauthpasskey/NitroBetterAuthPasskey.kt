@@ -24,9 +24,9 @@ import org.json.JSONObject
 
 @Keep
 @DoNotStrip
-class NitroBetterAuthPasskey : HybridPasskeySpec() {
+class HybridPasskey : HybridPasskeySpec() {
 
-  override fun register(input: RegisterPasskeyInput): Promise<RegistrationResponse> {
+  override fun createPasskey(input: RegisterPasskeyInput): Promise<RegistrationResponse> {
     val activity = requireActivity()
     val optionsJson = parseOptionsJson(input.optionsJSON)
 

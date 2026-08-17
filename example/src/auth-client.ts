@@ -1,9 +1,5 @@
 import { createAuthClient } from 'better-auth/react';
-
-import { expoClient } from '@better-auth/expo/client';
-
 import { betterAuthPasskeyClient } from 'react-native-nitro-better-auth-passkey';
-
 import { createMMKV } from 'react-native-mmkv';
 
 /**
@@ -15,41 +11,60 @@ import { createMMKV } from 'react-native-mmkv';
 const BASE_URL = 'https://auth.example.com';
 
 /**
- * MMKV-backed session storage. Nitro-powered, synchronous, encrypted at
- * rest via the OS keychain/keystore. Works in both bare RN and Expo — no
- * config plugin required.
- *
- * Pass `encryptionKey` on first init to enable encryption. In production
- * derive/persist that key via the platform keychain (e.g. via
- * `react-native-keychain`) rather than hardcoding it.
+ * MMKV-backed encrypted store. Works in bare RN — no expo modules
+ * required. Pass a real encryption key in production (e.g. one derived
+ * from the OS keychain).
  */
-const mmkv = createMMKV({
+const storage = createMMKV({
   id: 'nitro-passkey-example.auth',
   encryptionKey: 'change-me-in-production',
 });
 
-/**
- * Adapter that gives `expoClient`'s `storage` option the tiny surface it
- * needs (`getItem` / `setItem` / `deleteItem`). MMKV is synchronous, but
- * returning already-resolved Promises is fine — expo-client awaits them.
- */
-const mmkvStorage = {
-  getItem: (key: string) => mmkv.getString(key) ?? null,
-  setItem: (key: string, value: string) => mmkv.set(key, value),
-  removeItem: (key: string) => mmkv.remove(key),
-};
+const COOKIE_KEY = 'ba.cookie';
 
+/**
+ * Manual cookie persistence for React Native.
+ *
+ * better-auth normally relies on the browser's cookie jar or on
+ * `@better-auth/expo` to persist the session cookie between HTTP calls.
+ * On bare RN we don't have either, so we intercept the fetch cycle
+ * with better-fetch's `onRequest` / `onSuccess` hooks:
+ *
+ *   • On every request, attach the last-seen `Set-Cookie` value as
+ *     an outgoing `Cookie` header.
+ *   • On every response, capture `Set-Cookie` and persist it to MMKV.
+ *
+ * These hooks are void-returning — they mutate the context in place.
+ * Returning a modified request object also works, but mutating is
+ * what better-fetch's type system expects by default.
+ */
 export const authClient = createAuthClient({
   baseURL: BASE_URL,
-  plugins: [
-    // Session persistence + native cookie handling. `expoClient` is fine
-    // in bare RN too; the name is historical.
-    expoClient({
-      scheme: 'nitropasskeyexample',
-      storagePrefix: 'nitro-passkey-example',
-      storage: mmkvStorage,
-    }),
-    // The native passkey plugin. Everything else stays stock better-auth.
-    betterAuthPasskeyClient(),
-  ],
+  fetchOptions: {
+    onRequest(context) {
+      const stored = storage.getString(COOKIE_KEY);
+      if (stored) {
+        context.headers.set('Cookie', stored);
+      }
+    },
+    onSuccess(context) {
+      const setCookie = context.response.headers.get('set-cookie');
+      if (setCookie) {
+        // `set-cookie` may contain multiple cookies joined by comma;
+        // we store the raw value and send it back verbatim, which is
+        // what better-auth's own server-side middleware expects.
+        storage.set(COOKIE_KEY, setCookie);
+      }
+    },
+  },
+  plugins: [betterAuthPasskeyClient()],
 });
+
+/**
+ * Clear the persisted session cookie. Call this from your sign-out handler
+ * to make sure the next launch starts unauthenticated even if the server
+ * response was slow or failed.
+ */
+export const clearAuthStorage = () => {
+  storage.remove(COOKIE_KEY);
+};

@@ -109,4 +109,12 @@ android {
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation project(":react-native-nitro-modules")
+ 
+  // androidx.credentials 1.6.0 is the current stable line for the
+  // CreatePublicKeyCredentialRequest / GetPublicKeyCredentialOption
+  // APIs used by this module. Requires compileSdk 34+ (we ship 35).
+  implementation "androidx.credentials:credentials:1.6.0"
+  implementation "androidx.credentials:credentials-play-services-auth:1.6.0"
+  implementation "androidx.core:core-ktx:1.13.1"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
 }

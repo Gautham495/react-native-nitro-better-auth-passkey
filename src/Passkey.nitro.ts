@@ -42,8 +42,8 @@ export interface AuthenticatePasskeyInput {
  * Registration response shape that better-auth's
  * `/passkey/verify-registration` endpoint accepts.
  *
- * All binary fields are base64url-encoded strings, matching
- * `RegistrationResponseJSON` from @simplewebauthn/types.
+ * All binary fields are base64url-encoded strings, matching the
+ * `RegistrationResponseJSON` shape from the WebAuthn Level 3 JSON encoding.
  */
 export interface RegistrationResponse {
   id: string;
@@ -58,7 +58,7 @@ export interface RegistrationResponse {
 /**
  * Authentication response shape that better-auth's
  * `/passkey/verify-authentication` endpoint accepts
- * (`AuthenticationResponseJSON` from @simplewebauthn/types).
+ * (`AuthenticationResponseJSON` in the WebAuthn Level 3 JSON encoding).
  */
 export interface AuthenticationResponse {
   id: string;
@@ -85,8 +85,12 @@ export interface Passkey extends HybridObject<{
 }> {
   /**
    * Create a new platform passkey. Presents the system sheet.
+   *
+   * Named `createPasskey` (not `register`) because `register` is a
+   * reserved keyword in C++ and the generated C++ HybridObject spec
+   * refuses to compile a method with that name.
    */
-  register(input: RegisterPasskeyInput): Promise<RegistrationResponse>;
+  createPasskey(input: RegisterPasskeyInput): Promise<RegistrationResponse>;
 
   /**
    * Assert an existing platform passkey. Presents the system sheet

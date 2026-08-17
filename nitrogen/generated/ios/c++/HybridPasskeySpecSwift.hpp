@@ -80,8 +80,8 @@ namespace margelo::nitro::nitrobetterauthpasskey {
 
   public:
     // Methods
-    inline std::shared_ptr<Promise<RegistrationResponse>> register(const RegisterPasskeyInput& input) override {
-      auto __result = _swiftPart.register(std::forward<decltype(input)>(input));
+    inline std::shared_ptr<Promise<RegistrationResponse>> createPasskey(const RegisterPasskeyInput& input) override {
+      auto __result = _swiftPart.createPasskey(std::forward<decltype(input)>(input));
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

@@ -13,7 +13,7 @@ public protocol HybridPasskeySpec_protocol: HybridObject {
   
 
   // Methods
-  func register(input: RegisterPasskeyInput) throws -> Promise<RegistrationResponse>
+  func createPasskey(input: RegisterPasskeyInput) throws -> Promise<RegistrationResponse>
   func authenticate(input: AuthenticatePasskeyInput) throws -> Promise<AuthenticationResponse>
 }
 

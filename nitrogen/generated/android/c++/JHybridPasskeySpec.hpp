@@ -54,7 +54,7 @@ namespace margelo::nitro::nitrobetterauthpasskey {
 
   public:
     // Methods
-    std::shared_ptr<Promise<RegistrationResponse>> register(const RegisterPasskeyInput& input) override;
+    std::shared_ptr<Promise<RegistrationResponse>> createPasskey(const RegisterPasskeyInput& input) override;
     std::shared_ptr<Promise<AuthenticationResponse>> authenticate(const AuthenticatePasskeyInput& input) override;
 
   private:

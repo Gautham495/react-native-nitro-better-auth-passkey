@@ -32,7 +32,7 @@ abstract class HybridPasskeySpec: HybridObject() {
   // Methods
   @DoNotStrip
   @Keep
-  abstract fun register(input: RegisterPasskeyInput): Promise<RegistrationResponse>
+  abstract fun createPasskey(input: RegisterPasskeyInput): Promise<RegistrationResponse>
   
   @DoNotStrip
   @Keep

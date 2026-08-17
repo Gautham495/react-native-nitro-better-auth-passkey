@@ -27,12 +27,12 @@ int initialize(JavaVM* vm) {
   });
 }
 
-struct JHybridNitroBetterAuthPasskeySpecImpl: public jni::JavaClass<JHybridNitroBetterAuthPasskeySpecImpl, JHybridNitroBetterAuthPasskeySpec::JavaPart> {
-  static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/nitrobetterauthpasskey/NitroBetterAuthPasskey;";
-  static std::shared_ptr<JHybridNitroBetterAuthPasskeySpec> create() {
-    static const auto constructorFn = javaClassStatic()->getConstructor<JHybridNitroBetterAuthPasskeySpecImpl::javaobject()>();
-    jni::local_ref<JHybridNitroBetterAuthPasskeySpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
-    return javaPart->getJHybridNitroBetterAuthPasskeySpec();
+struct JHybridPasskeySpecImpl: public jni::JavaClass<JHybridPasskeySpecImpl, JHybridPasskeySpec::JavaPart> {
+  static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/nitrobetterauthpasskey/HybridPasskey;";
+  static std::shared_ptr<JHybridPasskeySpec> create() {
+    static const auto constructorFn = javaClassStatic()->getConstructor<JHybridPasskeySpecImpl::javaobject()>();
+    jni::local_ref<JHybridPasskeySpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
+    return javaPart->getJHybridPasskeySpec();
   }
 };
 
@@ -46,9 +46,9 @@ void registerAllNatives() {
 
   // Register Nitro Hybrid Objects
   HybridObjectRegistry::registerHybridObjectConstructor(
-    "NitroBetterAuthPasskey",
+    "Passkey",
     []() -> std::shared_ptr<HybridObject> {
-      return JHybridNitroBetterAuthPasskeySpecImpl::create();
+      return JHybridPasskeySpecImpl::create();
     }
   );
 }

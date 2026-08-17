@@ -14,7 +14,7 @@ namespace margelo::nitro::nitrobetterauthpasskey {
     HybridObject::loadHybridMethods();
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
-      prototype.registerHybridMethod("register", &HybridPasskeySpec::register);
+      prototype.registerHybridMethod("createPasskey", &HybridPasskeySpec::createPasskey);
       prototype.registerHybridMethod("authenticate", &HybridPasskeySpec::authenticate);
     });
   }
