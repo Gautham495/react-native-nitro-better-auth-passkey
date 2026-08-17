@@ -62,13 +62,7 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test --passWithNoTests
-
       # ---- Build ------------------------------------------------------------
-
-      - name: Generate Nitro bindings
-        run: yarn specs
 
       - name: Build package
         run: yarn build

@@ -231,7 +231,7 @@ Native cancellation and failures reject with an `Error`. The better-auth plugin 
 ```ts
 const res = await authClient.signIn.passkey()
 if (res.error) {
-  if (res.error.code === 'AUTH_CANCELLED') {
+  if (res.error.statusText === 'AUTH_CANCELLED') {
     // User dismissed the sheet, or the OS rejected the request
     // (no matching passkey, associated-domain mismatch, biometric unavailable, etc.)
   }
