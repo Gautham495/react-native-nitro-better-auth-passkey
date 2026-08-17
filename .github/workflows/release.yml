@@ -65,7 +65,7 @@ jobs:
       # ---- Build ------------------------------------------------------------
 
       - name: Build package
-        run: yarn build
+        run: yarn prepare
 
       - name: Verify build output
         run: |
