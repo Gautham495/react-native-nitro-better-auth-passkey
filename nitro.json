@@ -1,0 +1,23 @@
+{
+  "cxxNamespace": ["nitrobetterauthpasskey"],
+  "ios": {
+    "iosModuleName": "NitroBetterAuthPasskey"
+  },
+  "android": {
+    "androidNamespace": ["nitrobetterauthpasskey"],
+    "androidCxxLibName": "nitrobetterauthpasskey"
+  },
+  "autolinking": {
+    "NitroBetterAuthPasskey": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "NitroBetterAuthPasskey"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "NitroBetterAuthPasskey"
+      }
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}
