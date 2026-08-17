@@ -1,6 +1,6 @@
 {
   "name": "react-native-nitro-better-auth-passkey",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Better Auth Passkey Implementation With Nitro in React Native",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
