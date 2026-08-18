@@ -21,9 +21,9 @@ A **React Native Nitro Module** that adds native **passkey (WebAuthn)** support 
 > [!IMPORTANT]
 >
 > - Requires React Native **0.81+** with the **New Architecture** enabled.
-> - Requires **`better-auth` 1.6.26++** with the `@better-auth/passkey` server plugin.
+> - Requires **`better-auth` 1.6.26+** with the `@better-auth/passkey` server plugin.
 > - Must be tested on a **physical device** — passkey UI does not work on iOS Simulator or Android Emulator.
-> - iOS requires **iOS 15.1+** (`ASAuthorizationPlatformPublicKeyCredentialProvider`). Android requires **API 28+** and Google Play Services **23.30+**.
+> - iOS requires **iOS 16.4+** (`ASAuthorizationPlatformPublicKeyCredentialProvider`). Android requires **API 28+** and Google Play Services **23.30+**.
 
 ---
 
@@ -31,7 +31,6 @@ A **React Native Nitro Module** that adds native **passkey (WebAuthn)** support 
 
 ```bash
 npm install react-native-nitro-better-auth-passkey react-native-nitro-modules
-npm install better-auth @better-auth/passkey @better-fetch/fetch
 ```
 
 ```bash
@@ -103,7 +102,7 @@ cd ios && pod install
 
 Unlike libraries that ship a WebAuthn implementation in JS, this library **delegates entirely to the OS**:
 
-- **iOS:** `AuthenticationServices` is a system framework — already on every iPhone running iOS 15.1+.
+- **iOS:** `AuthenticationServices` is a system framework — already on every iPhone running iOS 16.4+.
 - **Android:** `CredentialManager` is a Jetpack library backed by Google Play Services — passkey storage and sync are managed by the OS.
 
 ### Server — better-auth passkey plugin
@@ -148,7 +147,7 @@ const fingerprints = {
 
 for (const [label, fp] of Object.entries(fingerprints)) {
   const bytes = Buffer.from(fp.replace(/:/g, ''), 'hex');
-  const hash = bytes.toString('base64url'); // Node 16+
+  const hash = bytes.toString('base64url');
   console.log(`${label}:`);
   console.log(`  android:apk-key-hash:${hash}\n`);
 }
@@ -303,6 +302,10 @@ Also purge your CDN cache for `/.well-known/assetlinks.json` — Cloudflare, Clo
 #### 6. Optional (API 34+): forward the HTTPS origin
 
 Request `android.permission.CREDENTIAL_MANAGER_SET_ORIGIN` in your `AndroidManifest.xml` to forward your app's HTTPS origin to Credential Manager. Without it, the module falls back to the `apk-key-hash` origin — which is why you must list those hashes in your server's `origin` array (see the server section above). You can skip this permission entirely if your server's `origin` includes the `apk-key-hash` entries.
+
+```bash
+  <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ORIGIN" />
+```
 
 ---
 
@@ -489,7 +492,7 @@ Deliberately narrow scope: this package exists to make better-auth passkeys work
 
 | Platform             | Status           | Notes                                                                            |
 | -------------------- | ---------------- | -------------------------------------------------------------------------------- |
-| **iOS**              | ✅ Supported     | Physical device, iOS 15.1+                                                       |
+| **iOS**              | ✅ Supported     | Physical device, iOS 16.4+                                                       |
 | **Android**          | ✅ Supported     | API 28+, Play Services 23.30+                                                    |
 | **macOS**            | ⚠️ Best-effort   | Same native code path as iOS via AuthenticationServices; needs community testing |
 | **Web**              | ❌ Not supported | Use stock `@better-auth/passkey/client` on web                                   |
