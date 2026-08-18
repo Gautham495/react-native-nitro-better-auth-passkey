@@ -186,8 +186,5 @@
       "vite"
     ],
     "version": "0.63.0"
-  },
-  "dependencies": {
-    "react-native-mmkv": "^4.3.2"
   }
 }
