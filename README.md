@@ -65,7 +65,7 @@ cd ios && pod install
 
 <table>
   <tr>
-    <th align="center">Registering/Adding Passkeys</th>
+    <th align="center">Registering Passkeys</th>
     <th align="center">Signing with Passkeys</th>
   </tr>
   <tr>
@@ -82,7 +82,7 @@ cd ios && pod install
 
 <table>
   <tr>
-    <th align="center">Registering/Adding Passkeys</th>
+    <th align="center">Registering Passkeys</th>
     <th align="center">Signing with Passkeys</th>
   </tr>
   <tr>
@@ -276,10 +276,10 @@ If `debugString` is non-empty, fix the file before doing anything else. Nothing 
 
 The `rpID` on the server and in every native call must be exactly the host — no scheme, no trailing dot, no `www.`:
 
-- ✅ `shineai.io`
-- ❌ `https://shineai.io`
-- ❌ `shineai.io.`
-- ❌ `www.shineai.io` (unless assetlinks is also served from `www.`)
+- ✅ `gauthamvijay.com`
+- ❌ `https://gauthamvijay.com`
+- ❌ `gauthamvijay.com.`
+- ❌ `www.gauthamvijay.com` (unless assetlinks is also served from `www.`)
 
 #### 5. Force re-verification after changing anything
 
